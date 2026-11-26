@@ -1,966 +1,561 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeFlow | Visual Development Platform</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9fbfd;
-        }
-        
-        h1, h2, h3, h4 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            line-height: 1.3;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header & Navigation */
-        header {
-            background-color: #fff;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-        }
-        
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo-icon {
-            color: #4361ee;
-            font-size: 28px;
-            margin-right: 10px;
-        }
-        
-        .logo-text {
-            font-family: 'Poppins', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: #333;
-        }
-        
-        .logo-text span {
-            color: #4361ee;
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 30px;
-        }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: #555;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        .nav-links a:hover {
-            color: #4361ee;
-        }
-        
-        .cta-button {
-            background-color: #4361ee;
-            color: white;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        
-        .cta-button:hover {
-            background-color: #3a56d4;
-            transform: translateY(-2px);
-        }
-        
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: #333;
-            cursor: pointer;
-        }
-        
-        /* Hero Section */
-        .hero {
-            padding: 150px 0 100px;
-            background: linear-gradient(135deg, #f0f4ff 0%, #f9fbfd 100%);
-        }
-        
-        .hero-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .hero-text {
-            flex: 1;
-            padding-right: 40px;
-        }
-        
-        .hero-text h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: #222;
-        }
-        
-        .hero-text h1 span {
-            color: #4361ee;
-        }
-        
-        .hero-text p {
-            font-size: 18px;
-            color: #666;
-            margin-bottom: 30px;
-            max-width: 600px;
-        }
-        
-        .hero-buttons {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .secondary-button {
-            background-color: white;
-            color: #4361ee;
-            border: 2px solid #4361ee;
-            padding: 12px 28px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .secondary-button:hover {
-            background-color: #f0f4ff;
-        }
-        
-        .hero-image {
-            flex: 1;
-            text-align: center;
-        }
-        
-        .hero-image img {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 20px 40px rgba(67, 97, 238, 0.15);
-        }
-        
-        /* Features Section */
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        .section-title h2 {
-            font-size: 36px;
-            color: #222;
-            margin-bottom: 15px;
-        }
-        
-        .section-title p {
-            color: #666;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .features {
-            padding: 100px 0;
-            background-color: white;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-        
-        .feature-card {
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .feature-icon {
-            background-color: #eef2ff;
-            color: #4361ee;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            font-size: 28px;
-        }
-        
-        .feature-card h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
-        
-        .feature-card p {
-            color: #666;
-        }
-        
-        /* Benefits Section */
-        .benefits {
-            padding: 100px 0;
-            background-color: #f0f4ff;
-        }
-        
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        
-        .benefit-item {
-            text-align: center;
-            padding: 30px 20px;
-        }
-        
-        .benefit-icon {
-            color: #4361ee;
-            font-size: 40px;
-            margin-bottom: 20px;
-        }
-        
-        .benefit-item h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
-        
-        .benefit-item p {
-            color: #666;
-        }
-        
-        /* Testimonials */
-        .testimonials {
-            padding: 100px 0;
-            background-color: white;
-        }
-        
-        .testimonial-slider {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-        }
-        
-        .testimonial {
-            background: #f9fbfd;
-            padding: 40px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .testimonial-text {
-            font-size: 18px;
-            font-style: italic;
-            margin-bottom: 30px;
-            color: #555;
-        }
-        
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .author-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #ddd;
-            margin-right: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #4361ee;
-            font-size: 24px;
-        }
-        
-        .author-info h4 {
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-        
-        .author-info p {
-            color: #777;
-            font-size: 14px;
-        }
-        
-        /* Pricing Section */
-        .pricing {
-            padding: 100px 0;
-            background-color: #f9fbfd;
-        }
-        
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-        
-        .pricing-card {
-            background: white;
-            border-radius: 10px;
-            padding: 40px 30px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            transition: transform 0.3s;
-        }
-        
-        .pricing-card.featured {
-            border-top: 5px solid #4361ee;
-            transform: scale(1.05);
-            position: relative;
-        }
-        
-        .featured-badge {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #4361ee;
-            color: white;
-            padding: 5px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        
-        .pricing-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .pricing-card.featured:hover {
-            transform: scale(1.05) translateY(-10px);
-        }
-        
-        .plan-name {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        
-        .plan-price {
-            font-size: 48px;
-            font-weight: 700;
-            color: #4361ee;
-            margin-bottom: 20px;
-        }
-        
-        .plan-price span {
-            font-size: 16px;
-            color: #777;
-        }
-        
-        .plan-features {
-            list-style: none;
-            margin-bottom: 30px;
-        }
-        
-        .plan-features li {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-            color: #555;
-        }
-        
-        .plan-features li:last-child {
-            border-bottom: none;
-        }
-        
-        /* CTA Section */
-        .cta-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
-            text-align: center;
-            color: white;
-        }
-        
-        .cta-section h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-        
-        .cta-section p {
-            font-size: 18px;
-            max-width: 700px;
-            margin: 0 auto 30px;
-            opacity: 0.9;
-        }
-        
-        .cta-section .cta-button {
-            background-color: white;
-            color: #4361ee;
-            font-size: 16px;
-            padding: 15px 40px;
-        }
-        
-        .cta-section .cta-button:hover {
-            background-color: #f0f4ff;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: #222;
-            color: #ccc;
-            padding: 70px 0 20px;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 50px;
-        }
-        
-        .footer-column h3 {
-            font-size: 20px;
-            color: white;
-            margin-bottom: 25px;
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-        
-        .footer-links a {
-            color: #aaa;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-links a:hover {
-            color: #4361ee;
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid #444;
-            font-size: 14px;
-            color: #888;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .hero-content {
-                flex-direction: column;
-            }
-            
-            .hero-text {
-                padding-right: 0;
-                margin-bottom: 50px;
-                text-align: center;
-            }
-            
-            .hero-text p {
-                margin: 0 auto 30px;
-            }
-            
-            .pricing-card.featured {
-                transform: none;
-            }
-            
-            .pricing-card.featured:hover {
-                transform: translateY(-10px);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            .hero-text h1 {
-                font-size: 36px;
-            }
-            
-            .section-title h2 {
-                font-size: 30px;
-            }
-            
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .hero-buttons button {
-                width: 100%;
-                max-width: 300px;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .hero {
-                padding: 130px 0 80px;
-            }
-            
-            .features, .benefits, .testimonials, .pricing, .cta-section {
-                padding: 70px 0;
-            }
-            
-            .feature-card, .testimonial {
-                padding: 25px;
-            }
-            
-            .plan-price {
-                font-size: 36px;
-            }
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>TOTP 验证码生成器</title>
+<style>
+  :root{
+    --bg:#edf1f6;
+    --card:#ffffff;
+    --card-2:#f7f9fc;
+    --text:#142033;
+    --muted:#5b6b82;
+    --faint:#8494ab;
+    --line:#dde4ee;
+    --primary:#1f56d6;
+    --primary-hover:#1a49b8;
+    --primary-text:#ffffff;
+    --code-bg:#0f1e38;
+    --code-text:#ffffff;
+    --ok:#0e9f6e;
+    --danger:#d92d20;
+    --danger-bg:#fef3f2;
+    --input-bg:#ffffff;
+    --shadow:0 12px 32px rgba(20,32,51,.08), 0 2px 8px rgba(20,32,51,.05);
+    --radius:16px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0c121e;
+      --card:#151e2f;
+      --card-2:#1a263b;
+      --text:#e8eef7;
+      --muted:#9aabc2;
+      --faint:#6f829c;
+      --line:#26344c;
+      --primary:#3b74f2;
+      --primary-hover:#2f65da;
+      --code-bg:#0a1526;
+      --danger-bg:#2b1715;
+      --input-bg:#101928;
+      --shadow:0 12px 32px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  button,[role="button"],select,summary,input:not([type="checkbox"],[type="radio"]){min-height:2.25rem}
+  button{cursor:pointer;font:inherit}
+  .wrap{max-width:700px;margin:0 auto;padding:28px 16px 40px}
+  @media(min-width:720px){.wrap{padding:44px 20px 56px}}
+
+  .intro{margin:0 4px 20px}
+  .intro h1{font-size:28px;line-height:1.25;margin:0 0 8px;font-weight:800;letter-spacing:-.02em}
+  @media(min-width:720px){.intro h1{font-size:32px}}
+  .intro p{margin:0;color:var(--muted);font-size:15px;max-width:56ch}
+  .intro p strong{color:var(--text);font-weight:600}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:20px;
+  }
+  @media(min-width:720px){.card{padding:26px 28px}}
+  .card + .card{margin-top:16px}
+
+  label.field-label{display:block;font-size:14px;font-weight:700;margin-bottom:8px}
+  .secret-row{display:flex;gap:8px}
+  .secret-wrap{position:relative;flex:1;min-width:0}
+  #secret{
+    width:100%;
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:15px;
+    letter-spacing:.04em;
+    padding:12px 44px 12px 14px;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    background:var(--input-bg);
+    color:var(--text);
+    outline:none;
+  }
+  #secret:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(31,86,214,.18)}
+  #secret::placeholder{color:var(--faint);letter-spacing:0;font-family:inherit}
+  .eye-btn{
+    position:absolute;right:4px;top:50%;transform:translateY(-50%);
+    width:38px;height:38px;border:0;background:transparent;border-radius:8px;
+    display:grid;place-items:center;color:var(--muted);font-size:18px;line-height:1;
+  }
+  .eye-btn:hover{background:var(--card-2);color:var(--text)}
+  .hint{font-size:13px;color:var(--muted);margin:8px 0 0}
+  .hint code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;background:var(--card-2);border:1px solid var(--line);padding:1px 5px;border-radius:5px;word-break:break-all}
+  .parsed{
+    display:none;margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--card-2);border:1px solid var(--line);
+    font-size:13.5px;color:var(--muted);
+  }
+  .parsed.show{display:block}
+  .parsed b{color:var(--text)}
+  .error{
+    display:none;margin-top:12px;padding:10px 12px;border-radius:10px;background:var(--danger-bg);color:var(--danger);
+    font-size:14px;border:1px solid rgba(217,45,32,.25);
+  }
+  .error.show{display:block}
+
+  .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;align-items:center}
+  .btn-primary{
+    background:var(--primary);color:var(--primary-text);border:0;border-radius:10px;
+    padding:11px 22px;font-weight:700;font-size:15px;min-height:46px;
+    display:inline-flex;align-items:center;gap:8px;
+  }
+  .btn-primary:hover{background:var(--primary-hover)}
+  .btn-ghost{
+    background:transparent;color:var(--muted);border:1px solid var(--line);border-radius:10px;
+    padding:10px 16px;font-weight:600;font-size:14px;min-height:46px;
+  }
+  .btn-ghost:hover{color:var(--text);border-color:var(--faint)}
+  .btn-link{background:none;border:0;color:var(--primary);font-size:14px;font-weight:600;padding:8px 4px;text-decoration:underline;text-underline-offset:3px}
+
+  /* Result */
+  .result{margin-top:22px;display:none}
+  .result.show{display:block}
+  .code-panel{
+    background:var(--code-bg);border-radius:14px;padding:22px 18px 18px;text-align:center;color:var(--code-text);
+  }
+  .code-label{font-size:12.5px;letter-spacing:.14em;color:#9db4d6;font-weight:600}
+  .code-value{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:52px;font-weight:700;letter-spacing:.12em;line-height:1.15;margin:6px 0 4px;
+    font-variant-numeric:tabular-nums;user-select:all;
+  }
+  @media(max-width:420px){.code-value{font-size:42px;letter-spacing:.08em}}
+  .code-value.expiring{color:#ffb4a8}
+  .copy-row{display:flex;justify-content:center;gap:10px;margin-top:12px;flex-wrap:wrap}
+  .btn-copy{
+    background:#ffffff;color:#0f1e38;border:0;border-radius:9px;padding:9px 20px;font-weight:700;font-size:14.5px;min-height:42px;
+  }
+  .btn-copy.copied{background:var(--ok);color:#fff}
+  .next-line{font-size:13px;color:#9db4d6;margin-top:12px}
+  .next-line span{font-family:ui-monospace,Menlo,monospace;color:#dbe7fa;letter-spacing:.08em}
+  .timer-row{display:flex;align-items:center;gap:12px;margin-top:16px}
+  .bar{flex:1;height:8px;border-radius:99px;background:var(--card-2);border:1px solid var(--line);overflow:hidden}
+  .bar-fill{height:100%;background:var(--primary);border-radius:99px;transition:width .25s linear}
+  .bar-fill.low{background:var(--danger)}
+  .timer-text{font-size:13.5px;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .timer-text b{color:var(--text)}
+
+  .empty{
+    margin-top:22px;border:1.5px dashed var(--line);border-radius:14px;padding:26px 18px;text-align:center;color:var(--faint);font-size:14.5px;
+  }
+
+  details.adv{margin-top:20px;border-top:1px solid var(--line);padding-top:14px}
+  details.adv summary{font-size:14px;font-weight:700;color:var(--muted);cursor:pointer;padding:6px 0;list-style-position:outside}
+  .adv-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:10px}
+  @media(min-width:560px){.adv-grid{grid-template-columns:repeat(3,1fr)}}
+  .adv-grid label{font-size:13px;font-weight:600;color:var(--muted);display:block}
+  .adv-grid select{
+    width:100%;margin-top:5px;padding:9px 10px;border:1.5px solid var(--line);border-radius:9px;background:var(--input-bg);color:var(--text);font-size:14.5px;
+  }
+
+  .how h2{font-size:17px;margin:0 0 10px;font-weight:800}
+  .how p{margin:0 0 10px;font-size:14.5px;color:var(--muted)}
+  .how ol{margin:0;padding-left:22px;font-size:14.5px;color:var(--muted)}
+  .how ol li{margin:5px 0}
+  .how ol li::marker{color:var(--primary);font-weight:700}
+  .safe{
+    margin-top:14px;display:flex;gap:10px;align-items:flex-start;background:var(--card-2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;
+    font-size:13.5px;color:var(--muted);
+  }
+  .safe .dot{flex:none;width:22px;height:22px;border-radius:50%;background:var(--ok);color:#fff;display:grid;place-items:center;font-size:13px;margin-top:1px}
+  .safe b{color:var(--text)}
+  footer{margin-top:18px;text-align:center;font-size:12.5px;color:var(--faint);line-height:1.7;padding:0 8px}
+  footer a{color:var(--muted)}
+  .toast{
+    position:fixed;left:50%;bottom:26px;transform:translate(-50%,16px);opacity:0;pointer-events:none;
+    background:#142033;color:#fff;padding:10px 18px;border-radius:99px;font-size:14px;font-weight:600;
+    transition:all .25s ease;box-shadow:0 10px 28px rgba(0,0,0,.25);z-index:20;
+  }
+  @media(prefers-color-scheme:dark){.toast{background:#e8eef7;color:#142033}}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+</style>
 </head>
 <body>
-    <!-- Header & Navigation -->
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">
-                    <div class="logo-icon"><i class="fas fa-bezier-curve"></i></div>
-                    <div class="logo-text">Code<span>Flow</span></div>
-                </div>
-                
-                <ul class="nav-links">
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#benefits">Benefits</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#pricing">Pricing</a></li>
-                    <li><a href="#">Resources</a></li>
-                </ul>
-                
-                <button class="cta-button">Start Free Trial</button>
-                <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
-            </nav>
-        </div>
-    </header>
+<main class="wrap">
+  <div class="intro">
+    <h1>TOTP 验证码生成器</h1>
+  </div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>Build Apps Faster With <span>Visual Development</span></h1>
-                    <p>CodeFlow empowers teams to create enterprise-grade applications with minimal coding. Drag, drop, and connect components to build powerful web and mobile apps in record time.</p>
-                    <div class="hero-buttons">
-                        <button class="cta-button">Start Building Free</button>
-                        <button class="secondary-button">Watch Demo</button>
-                    </div>
-                </div>
-                <div class="hero-image">
-                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CodeFlow Platform Interface">
-                </div>
-            </div>
-        </div>
-    </section>
+  <section class="card" aria-label="验证码生成">
+    <label class="field-label" for="secret">2FA 密钥（Secret Key）</label>
+    <div class="secret-row">
+      <div class="secret-wrap">
+        <input id="secret" type="password" autocomplete="off" autocapitalize="characters" spellcheck="false"
+          placeholder="例如 JBSWY3DPEHPK3PXP" aria-describedby="hintText" />
+        <button class="eye-btn" id="toggleVis" type="button" aria-label="显示或隐藏密钥" title="显示 / 隐藏">👁</button>
+      </div>
+    </div>
+    <p class="hint" id="hintText">支持三种粘贴方式：纯 Base32 密钥、<code>otpauth://totp/…</code> 链接、或整行账号串 <code>UID|密码|2FA密钥|邮箱…</code>（会自动提取其中的密钥）。</p>
 
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="container">
-            <div class="section-title">
-                <h2>Powerful Features for Rapid Development</h2>
-                <p>CodeFlow provides all the tools you need to build, deploy, and scale applications without writing extensive code.</p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-th-large"></i>
-                    </div>
-                    <h3>Visual Builder</h3>
-                    <p>Drag and drop UI components to design responsive interfaces. Connect data sources with simple point-and-click actions.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h3>Database Integration</h3>
-                    <p>Connect to any data source with built-in connectors. Automatically generate CRUD operations without writing SQL.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3>Cross-Platform</h3>
-                    <p>Build once, deploy everywhere. Generate applications for web, iOS, and Android from a single visual design.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3>Extensible with Code</h3>
-                    <p>Add custom functionality with JavaScript when needed. Our platform doesn't limit your creativity or complexity.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Enterprise Security</h3>
-                    <p>Built-in authentication, authorization, and data encryption. SOC2 compliant with enterprise-grade security features.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <h3>One-Click Deployment</h3>
-                    <p>Deploy to cloud or on-premises with a single click. Automatic scaling and monitoring included.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="parsed" id="parsedInfo" role="status"></div>
+    <div class="error" id="errorBox" role="alert"></div>
 
-    <!-- Benefits Section -->
-    <section class="benefits" id="benefits">
-        <div class="container">
-            <div class="section-title">
-                <h2>Why Choose CodeFlow?</h2>
-                <p>Join thousands of companies accelerating their digital transformation with low-code development.</p>
-            </div>
-            
-            <div class="benefits-grid">
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3>10x Faster Development</h3>
-                    <p>Build applications in days instead of months with visual development tools.</p>
-                </div>
-                
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <h3>Reduce Costs by 70%</h3>
-                    <p>Lower development and maintenance costs with fewer resources required.</p>
-                </div>
-                
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Citizen Developers</h3>
-                    <p>Enable business users to build solutions with minimal IT assistance.</p>
-                </div>
-                
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Scale Effortlessly</h3>
-                    <p>From prototype to enterprise-scale applications with the same platform.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="actions">
+      <button class="btn-primary" id="genBtn" type="button">🔑 获取验证码</button>
+      <button class="btn-ghost" id="clearBtn" type="button">清空</button>
+      <button class="btn-link" id="demoBtn" type="button">用示例密钥试一下</button>
+    </div>
 
-    <!-- Testimonials -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <div class="section-title">
-                <h2>Trusted by Industry Leaders</h2>
-                <p>See what our customers have to say about their experience with CodeFlow.</p>
-            </div>
-            
-            <div class="testimonial-slider">
-                <div class="testimonial">
-                    <div class="testimonial-text">
-                        "CodeFlow transformed how we deliver solutions to our business units. What used to take 6 months now takes 3 weeks. Our development team can focus on complex problems while business teams build their own solutions."
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">SC</div>
-                        <div class="author-info">
-                            <h4>Sarah Chen</h4>
-                            <p>CTO, TechGrowth Inc.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="empty" id="emptyState">输入密钥后，验证码会显示在这里</div>
 
-    <!-- Pricing Section -->
-    <section class="pricing" id="pricing">
-        <div class="container">
-            <div class="section-title">
-                <h2>Simple, Transparent Pricing</h2>
-                <p>Choose the plan that fits your needs. All plans include core features with no hidden fees.</p>
-            </div>
-            
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3 class="plan-name">Starter</h3>
-                    <div class="plan-price">$29<span>/month</span></div>
-                    <ul class="plan-features">
-                        <li>Up to 5 users</li>
-                        <li>10 GB storage</li>
-                        <li>Basic components</li>
-                        <li>Community support</li>
-                        <li>1 production app</li>
-                    </ul>
-                    <button class="secondary-button">Get Started</button>
-                </div>
-                
-                <div class="pricing-card featured">
-                    <div class="featured-badge">Most Popular</div>
-                    <h3 class="plan-name">Professional</h3>
-                    <div class="plan-price">$89<span>/month</span></div>
-                    <ul class="plan-features">
-                        <li>Up to 25 users</li>
-                        <li>100 GB storage</li>
-                        <li>All components</li>
-                        <li>Priority support</li>
-                        <li>10 production apps</li>
-                        <li>Custom branding</li>
-                    </ul>
-                    <button class="cta-button">Try Free for 14 Days</button>
-                </div>
-                
-                <div class="pricing-card">
-                    <h3 class="plan-name">Enterprise</h3>
-                    <div class="plan-price">Custom</div>
-                    <ul class="plan-features">
-                        <li>Unlimited users</li>
-                        <li>Unlimited storage</li>
-                        <li>All features included</li>
-                        <li>24/7 dedicated support</li>
-                        <li>Unlimited apps</li>
-                        <li>On-premises option</li>
-                    </ul>
-                    <button class="secondary-button">Contact Sales</button>
-                </div>
-            </div>
+    <div class="result" id="result" aria-live="polite">
+      <div class="code-panel">
+        <div class="code-label">当前验证码</div>
+        <div class="code-value" id="codeValue">------</div>
+        <div class="copy-row">
+          <button class="btn-copy" id="copyBtn" type="button">复制验证码</button>
         </div>
-    </section>
+        <div class="next-line">下一个：<span id="nextCode">------</span></div>
+      </div>
+      <div class="timer-row">
+        <div class="bar" aria-hidden="true"><div class="bar-fill" id="barFill" style="width:100%"></div></div>
+        <div class="timer-text"><b id="remainSec">30</b> 秒后刷新</div>
+      </div>
+    </div>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <h2>Start Building Today</h2>
-            <p>Join over 10,000 companies that use CodeFlow to accelerate their application development. No credit card required for the free trial.</p>
-            <button class="cta-button">Get Started for Free</button>
-        </div>
-    </section>
+    <details class="adv" open>
+      <summary>高级设置（一般不用改）</summary>
+      <div class="adv-grid">
+        <label>算法
+          <select id="optAlgo">
+            <option value="SHA-1" selected>SHA-1（默认）</option>
+            <option value="SHA-256">SHA-256</option>
+            <option value="SHA-512">SHA-512</option>
+          </select>
+        </label>
+        <label>位数
+          <select id="optDigits">
+            <option value="6" selected>6 位</option>
+            <option value="8">8 位</option>
+            <option value="7">7 位</option>
+          </select>
+        </label>
+        <label>刷新周期
+          <select id="optPeriod">
+            <option value="30" selected>30 秒</option>
+            <option value="60">60 秒</option>
+          </select>
+        </label>
+      </div>
+    </details>
+  </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <div class="logo">
-                        <div class="logo-icon"><i class="fas fa-bezier-curve"></i></div>
-                        <div class="logo-text">Code<span>Flow</span></div>
-                    </div>
-                    <p style="margin-top: 20px; color: #aaa;">The leading visual development platform for building enterprise applications with minimal coding.</p>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Product</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Features</a></li>
-                        <li><a href="#">Pricing</a></li>
-                        <li><a href="#">Use Cases</a></li>
-                        <li><a href="#">Integrations</a></li>
-                        <li><a href="#">Roadmap</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Resources</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">Tutorials</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Community</a></li>
-                        <li><a href="#">Support</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Company</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2023 CodeFlow. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+  <section class="card how">
+    <h2>使用说明</h2>
+    <p>两步验证（2FA）在密码之外再加一层保护：登录时除了密码，还要填一个每 30 秒变化的 6 位动态码。这个工具就是网页版的 Google Authenticator。</p>
+    <ol>
+      <li>把你的 2FA 密钥粘贴到上面的输入框</li>
+      <li>点「获取验证码」（粘贴后也会自动生成）</li>
+      <li>把显示的 6 位码填到正在登录的网站，点验证码即可复制</li>
+      <li>码过期不用刷新页面 —— 它会自己换成下一个</li>
+    </ol>
+    <div class="safe">
+      <span class="dot" aria-hidden="true">✓</span>
+      <span><b>密钥只在你这台设备上计算。</b>生成过程全部用浏览器自带的 Web Crypto 在本地完成，不上传、不保存；关掉页面，输入的密钥就没了。请像保管密码一样保管密钥，不要发给任何人。</span>
+    </div>
+  </section>
 
-    <script>
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-            
-            // Adjust for mobile
-            if (window.innerWidth <= 768) {
-                if (navLinks.style.display === 'flex') {
-                    navLinks.style.flexDirection = 'column';
-                    navLinks.style.position = 'absolute';
-                    navLinks.style.top = '80px';
-                    navLinks.style.left = '0';
-                    navLinks.style.width = '100%';
-                    navLinks.style.backgroundColor = 'white';
-                    navLinks.style.padding = '20px';
-                    navLinks.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
-                    
-                    const navItems = document.querySelectorAll('.nav-links li');
-                    navItems.forEach(item => {
-                        item.style.margin = '10px 0';
-                    });
-                }
-            }
-        });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu if open
-                    if(window.innerWidth <= 768) {
-                        document.querySelector('.nav-links').style.display = 'none';
-                    }
-                }
-            });
-        });
-        
-        // Simple testimonial slider
-        const testimonials = [
-            {
-                text: "CodeFlow transformed how we deliver solutions to our business units. What used to take 6 months now takes 3 weeks. Our development team can focus on complex problems while business teams build their own solutions.",
-                name: "Sarah Chen",
-                position: "CTO, TechGrowth Inc.",
-                initials: "SC"
-            },
-            {
-                text: "We reduced our app development time by 80% using CodeFlow. The visual interface made it easy for our analysts to build data dashboards without waiting for IT resources.",
-                name: "Marcus Johnson",
-                position: "Director of Operations, DataCorp",
-                initials: "MJ"
-            },
-            {
-                text: "As a non-technical founder, CodeFlow allowed me to build our MVP in just 2 months. I could test ideas quickly and iterate based on user feedback without deep coding knowledge.",
-                name: "Lisa Wang",
-                position: "Founder, StartupLabs",
-                initials: "LW"
-            }
-        ];
-        
-        let currentTestimonial = 0;
-        const testimonialElement = document.querySelector('.testimonial');
-        
-        function rotateTestimonial() {
-            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
-            updateTestimonial();
+  <footer>
+    按 RFC 6238 / RFC 4226（TOTP / HOTP）标准生成，兼容 Google Authenticator、Microsoft Authenticator 等主流验证器
+  </footer>
+</main>
+
+<div class="toast" id="toast">已复制</div>
+
+<script>
+(function(){
+  "use strict";
+  var secretEl = document.getElementById('secret');
+  var genBtn = document.getElementById('genBtn');
+  var clearBtn = document.getElementById('clearBtn');
+  var demoBtn = document.getElementById('demoBtn');
+  var toggleVis = document.getElementById('toggleVis');
+  var copyBtn = document.getElementById('copyBtn');
+  var resultEl = document.getElementById('result');
+  var emptyEl = document.getElementById('emptyState');
+  var codeEl = document.getElementById('codeValue');
+  var nextEl = document.getElementById('nextCode');
+  var barEl = document.getElementById('barFill');
+  var remainEl = document.getElementById('remainSec');
+  var errorEl = document.getElementById('errorBox');
+  var parsedEl = document.getElementById('parsedInfo');
+  var toastEl = document.getElementById('toast');
+  var optAlgo = document.getElementById('optAlgo');
+  var optDigits = document.getElementById('optDigits');
+  var optPeriod = document.getElementById('optPeriod');
+
+  var state = { secretBytes: null, timer: null, lastCounter: -1, currentCode: '' };
+
+  function showToast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    setTimeout(function(){ toastEl.classList.remove('show'); }, 1800);
+  }
+  function showError(msg){
+    if(msg){ errorEl.textContent = msg; errorEl.classList.add('show'); }
+    else { errorEl.textContent=''; errorEl.classList.remove('show'); }
+  }
+
+  /* ---------- Base32 decode (RFC 4648) ---------- */
+  function base32Decode(input){
+    var alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+    var clean = input.toUpperCase().replace(/[\s\-]/g,'').replace(/=+$/,'');
+    if(!clean) return null;
+    for(var i=0;i<clean.length;i++){
+      if(alphabet.indexOf(clean[i]) === -1) return null;
+    }
+    var bits = 0, value = 0, out = [];
+    for(var j=0;j<clean.length;j++){
+      value = (value << 5) | alphabet.indexOf(clean[j]);
+      bits += 5;
+      if(bits >= 8){ out.push((value >>> (bits-8)) & 0xff); bits -= 8; }
+    }
+    return new Uint8Array(out);
+  }
+
+  function looksLikeBase32(s){
+    var c = s.toUpperCase().replace(/[\s\-=]/g,'');
+    return c.length >= 10 && /^[A-Z2-7]+$/.test(c);
+  }
+
+  /* ---------- Parse whatever the user pasted ---------- */
+  function parseInput(raw){
+    var text = (raw || '').trim();
+    if(!text) return { empty:true };
+    var meta = {};
+
+    if(/^otpauth:\/\//i.test(text)){
+      try{
+        var u = new URL(text);
+        var secret = u.searchParams.get('secret');
+        if(!secret) return { error:'这个 otpauth:// 链接里没有 secret 参数。' };
+        var label = decodeURIComponent(u.pathname.replace(/^\//,''));
+        meta.label = label;
+        meta.issuer = u.searchParams.get('issuer') || '';
+        var algo = (u.searchParams.get('algorithm') || '').toUpperCase();
+        if(algo === 'SHA1' || algo === 'SHA256' || algo === 'SHA512'){
+          meta.algorithm = algo.replace('SHA','SHA-');
         }
-        
-        function updateTestimonial() {
-            const testimonial = testimonials[currentTestimonial];
-            testimonialElement.innerHTML = `
-                <div class="testimonial-text">"${testimonial.text}"</div>
-                <div class="testimonial-author">
-                    <div class="author-avatar">${testimonial.initials}</div>
-                    <div class="author-info">
-                        <h4>${testimonial.name}</h4>
-                        <p>${testimonial.position}</p>
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Auto-rotate testimonials every 5 seconds
-        setInterval(rotateTestimonial, 5000);
-        
-        // CTA button interactions
-        document.querySelectorAll('.cta-button').forEach(button => {
-            button.addEventListener('click', function() {
-                alert('Thank you for your interest in CodeFlow! You would be redirected to the signup page in a real implementation.');
-            });
-        });
-        
-        // Pricing card interactions
-        document.querySelectorAll('.pricing-card button').forEach(button => {
-            button.addEventListener('click', function() {
-                const planName = this.closest('.pricing-card').querySelector('.plan-name').textContent;
-                alert(`You selected the ${planName} plan. In a real implementation, you would be redirected to the checkout process.`);
-            });
-        });
-    </script>
+        var d = parseInt(u.searchParams.get('digits') || '', 10);
+        if(d >= 6 && d <= 8) meta.digits = d;
+        var p = parseInt(u.searchParams.get('period') || '', 10);
+        if(p === 30 || p === 60) meta.period = p;
+        return { secret: secret, meta: meta };
+      }catch(e){
+        return { error:'otpauth:// 链接解析失败，请检查是否粘贴完整。' };
+      }
+    }
+
+    if(text.indexOf('|') !== -1){
+      var parts = text.split('|').map(function(s){ return s.trim(); });
+      // 2fa.fun format: UID|password|2FA|email|... -> 3rd field first
+      var candidates = [];
+      if(parts[2]) candidates.push(parts[2]);
+      parts.forEach(function(pt){ if(candidates.indexOf(pt) === -1) candidates.push(pt); });
+      for(var k=0;k<candidates.length;k++){
+        if(looksLikeBase32(candidates[k])) return { secret: candidates[k], meta:{ fromRow:true } };
+      }
+      return { error:'这一行里没有找到像 Base32 密钥的内容（应为 A–Z、2–7 组成的字符串）。' };
+    }
+
+    return { secret: text, meta: meta };
+  }
+
+  /* ---------- TOTP via Web Crypto (RFC 6238 / 4226) ---------- */
+  function getOpts(meta){
+    return {
+      algorithm: (meta && meta.algorithm) || optAlgo.value,
+      digits: (meta && meta.digits) || parseInt(optDigits.value,10),
+      period: (meta && meta.period) || parseInt(optPeriod.value,10)
+    };
+  }
+
+  function hotp(secretBytes, counter, opts){
+    var buf = new ArrayBuffer(8);
+    var view = new DataView(buf);
+    view.setUint32(4, counter >>> 0, false);
+    view.setUint32(0, Math.floor(counter / 4294967296), false);
+    return crypto.subtle.importKey('raw', secretBytes, { name:'HMAC', hash: opts.algorithm }, false, ['sign'])
+      .then(function(key){ return crypto.subtle.sign('HMAC', key, buf); })
+      .then(function(sig){
+        var h = new Uint8Array(sig);
+        var offset = h[h.length-1] & 0x0f;
+        var binary = ((h[offset] & 0x7f) << 24) | ((h[offset+1] & 0xff) << 16) | ((h[offset+2] & 0xff) << 8) | (h[offset+3] & 0xff);
+        var mod = Math.pow(10, opts.digits);
+        var code = String(binary % mod);
+        while(code.length < opts.digits) code = '0' + code;
+        return code;
+      });
+  }
+
+  function formatCode(code){
+    if(code.length === 6) return code.slice(0,3) + ' ' + code.slice(3);
+    if(code.length === 8) return code.slice(0,4) + ' ' + code.slice(4);
+    return code;
+  }
+
+  var currentMeta = {};
+  var currentOpts = null;
+
+  function refreshCodes(){
+    if(!state.secretBytes || !currentOpts) return;
+    var nowSec = Math.floor(Date.now()/1000);
+    var counter = Math.floor(nowSec / currentOpts.period);
+    var remain = currentOpts.period - (nowSec % currentOpts.period);
+    remainEl.textContent = remain;
+    barEl.style.width = (remain / currentOpts.period * 100) + '%';
+    barEl.classList.toggle('low', remain <= 5);
+    codeEl.classList.toggle('expiring', remain <= 5);
+    if(counter !== state.lastCounter){
+      state.lastCounter = counter;
+      var bytes = state.secretBytes, opts = currentOpts;
+      hotp(bytes, counter, opts).then(function(code){
+        state.currentCode = code;
+        codeEl.textContent = formatCode(code);
+      }).catch(function(){ showError('生成失败：浏览器加密接口不可用，请换用最新版浏览器重试。'); });
+      hotp(bytes, counter + 1, opts).then(function(code){
+        nextEl.textContent = formatCode(code);
+      }).catch(function(){});
+    }
+  }
+
+  function startTimer(){
+    if(state.timer) clearInterval(state.timer);
+    refreshCodes();
+    state.timer = setInterval(refreshCodes, 200);
+  }
+  function stopTimer(){
+    if(state.timer){ clearInterval(state.timer); state.timer = null; }
+    state.lastCounter = -1;
+  }
+
+  function generate(){
+    var parsed = parseInput(secretEl.value);
+    if(parsed.empty){
+      stopTimer(); state.secretBytes = null;
+      resultEl.classList.remove('show'); emptyEl.style.display='block';
+      parsedEl.classList.remove('show'); showError('');
+      return;
+    }
+    if(parsed.error){
+      stopTimer(); state.secretBytes = null;
+      resultEl.classList.remove('show'); emptyEl.style.display='block';
+      parsedEl.classList.remove('show'); showError(parsed.error);
+      return;
+    }
+    var bytes = base32Decode(parsed.secret);
+    if(!bytes || bytes.length === 0){
+      stopTimer(); state.secretBytes = null;
+      resultEl.classList.remove('show'); emptyEl.style.display='block';
+      showError('密钥格式不对：TOTP 密钥应是 Base32 编码，只包含字母 A–Z 和数字 2–7（可带空格）。');
+      return;
+    }
+    showError('');
+    currentMeta = parsed.meta || {};
+    // otpauth params take precedence visually: reflect them into the selects
+    if(currentMeta.algorithm) optAlgo.value = currentMeta.algorithm;
+    if(currentMeta.digits) optDigits.value = String(currentMeta.digits);
+    if(currentMeta.period) optPeriod.value = String(currentMeta.period);
+    currentOpts = getOpts(null);
+
+    var info = [];
+    if(currentMeta.issuer) info.push('发行方：<b>' + escapeHtml(currentMeta.issuer) + '</b>');
+    if(currentMeta.label) info.push('账号：<b>' + escapeHtml(currentMeta.label) + '</b>');
+    if(currentMeta.fromRow) info.push('已从整行账号信息中自动提取出 2FA 密钥');
+    if(info.length){ parsedEl.innerHTML = info.join(' &nbsp;·&nbsp; '); parsedEl.classList.add('show'); }
+    else parsedEl.classList.remove('show');
+
+    state.secretBytes = bytes;
+    state.lastCounter = -1;
+    emptyEl.style.display = 'none';
+    resultEl.classList.add('show');
+    copyBtn.textContent = '复制验证码';
+    copyBtn.classList.remove('copied');
+    startTimer();
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  /* ---------- Events ---------- */
+  var debounce = null;
+  secretEl.addEventListener('input', function(){
+    clearTimeout(debounce);
+    debounce = setTimeout(generate, 350);
+  });
+  secretEl.addEventListener('paste', function(){
+    setTimeout(generate, 50);
+  });
+  secretEl.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); generate(); }
+  });
+  genBtn.addEventListener('click', function(){
+    if(!secretEl.value.trim()){ showError('请先粘贴你的 2FA 密钥。'); secretEl.focus(); return; }
+    generate();
+  });
+  clearBtn.addEventListener('click', function(){
+    secretEl.value = '';
+    generate();
+    secretEl.focus();
+  });
+  demoBtn.addEventListener('click', function(){
+    secretEl.value = 'JBSWY3DPEHPK3PXP';
+    secretEl.type = 'text';
+    generate();
+    showToast('已填入示例密钥');
+  });
+  toggleVis.addEventListener('click', function(){
+    secretEl.type = secretEl.type === 'password' ? 'text' : 'password';
+    toggleVis.textContent = secretEl.type === 'password' ? '👁' : '🙈';
+  });
+  [optAlgo, optDigits, optPeriod].forEach(function(el){
+    el.addEventListener('change', function(){ if(state.secretBytes) generate(); });
+  });
+
+  function doCopy(){
+    if(!state.currentCode) return;
+    var code = state.currentCode;
+    function done(){
+      copyBtn.textContent = '✓ 已复制';
+      copyBtn.classList.add('copied');
+      showToast('验证码 ' + code + ' 已复制');
+      setTimeout(function(){ copyBtn.textContent='复制验证码'; copyBtn.classList.remove('copied'); }, 2000);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(code).then(done).catch(function(){ fallbackCopy(code); done(); });
+    } else { fallbackCopy(code); done(); }
+  }
+  function fallbackCopy(text){
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); }catch(e){}
+    document.body.removeChild(ta);
+  }
+  copyBtn.addEventListener('click', doCopy);
+  codeEl.addEventListener('click', doCopy);
+})();
+</script>
 </body>
 </html>
